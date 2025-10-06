@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Modern</title>
+    <link rel="stylesheet" href="stylenya.css">
+</head>
+<body>
+    <div class="container">
+        <h1>INI KALKULATOR</h1>
+
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            
+            <div class="buttons">
+                <button class="btn clear" onclick="clearDisplay()">C</button>
+                <button class="btn backspace" onclick="backspace()">⌫</button>
+                <button class="btn operator" onclick="appendOperator('/')">/</button>
+                <button class="btn operator" onclick="appendOperator('*')">×</button>
+                
+                <button class="btn number" onclick="appendNumber('7')">7</button>
+                <button class="btn number" onclick="appendNumber('8')">8</button>
+                <button class="btn number" onclick="appendNumber('9')">9</button>
+                <button class="btn operator" onclick="appendOperator('-')">−</button>
+                
+                <button class="btn number" onclick="appendNumber('4')">4</button>
+                <button class="btn number" onclick="appendNumber('5')">5</button>
+                <button class="btn number" onclick="appendNumber('6')">6</button>
+                <button class="btn operator" onclick="appendOperator('+')">+</button>
+                
+                <button class="btn number" onclick="appendNumber('1')">1</button>
+                <button class="btn number" onclick="appendNumber('2')">2</button>
+                <button class="btn number" onclick="appendNumber('3')">3</button>
+                <button class="btn equals" onclick="calculate()">=</button>
+                
+                <button class="btn number zero" onclick="appendNumber('0')">0</button>
+                <button class="btn number" onclick="appendDecimal()">.</button>
+            </div>
+            
+            <button class="toggle-history" onclick="toggleHistory()">TAMPILKAN RIWAYAT</button>
+            <div class="history" id="history">
+                <h3>RIWAYAT PERHITUNGAN</h3>
+                <ul class="history-list" id="historyList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="javanya.js"></script>
+</body>
+</html>
