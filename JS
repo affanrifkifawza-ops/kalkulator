@@ -1,0 +1,136 @@
+let currentInput = '0';
+let previousInput = '';
+let operation = null;
+let resetScreen = false;
+const history = [];
+
+const display = document.getElementById('display');
+const historySection = document.getElementById('history');
+const historyList = document.getElementById('historyList');
+
+function updateDisplay() {
+    display.textContent = currentInput;
+}
+
+function appendNumber(number) {
+    if (currentInput === '0' || resetScreen) {
+        currentInput = number;
+        resetScreen = false;
+    } else {
+        currentInput += number;
+    }
+    updateDisplay();
+}
+
+function appendDecimal() {
+    if (resetScreen) {
+        currentInput = '0.';
+        resetScreen = false;
+    } else if (!currentInput.includes('.')) {
+        currentInput += '.';
+    }
+    updateDisplay();
+}
+
+function appendOperator(op) {
+    if (operation !== null) calculate();
+    previousInput = currentInput;
+    operation = op;
+    resetScreen = true;
+}
+
+function calculate() {
+    if (operation === null || resetScreen) return;
+    
+    let result;
+    const prev = parseFloat(previousInput);
+    const current = parseFloat(currentInput);
+    
+    switch (operation) {
+        case '+':
+            result = prev + current;
+            break;
+        case '-':
+            result = prev - current;
+            break;
+        case '*':
+            result = prev * current;
+            break;
+        case '/':
+            if (current === 0) {
+                result = 'Error';
+            } else {
+                result = prev / current;
+            }
+            break;
+        default:
+            return;
+    }
+    
+    // Simpan ke riwayat
+    const calculation = `${previousInput} ${operation} ${currentInput} = ${result}`;
+    history.push(calculation);
+    updateHistory();
+    
+    currentInput = result.toString();
+    operation = null;
+    resetScreen = true;
+    updateDisplay();
+}
+
+function clearDisplay() {
+    currentInput = '0';
+    previousInput = '';
+    operation = null;
+    resetScreen = false;
+    updateDisplay();
+}
+
+function backspace() {
+    if (currentInput.length === 1) {
+        currentInput = '0';
+    } else {
+        currentInput = currentInput.slice(0, -1);
+    }
+    updateDisplay();
+}
+
+function updateHistory() {
+    historyList.innerHTML = '';
+    history.slice().reverse().forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        historyList.appendChild(li);
+    });
+}
+
+function toggleHistory() {
+    if (historySection.style.display === 'block') {
+        historySection.style.display = 'none';
+        document.querySelector('.toggle-history').textContent = 'TAMPILKAN RIWAYAT';
+    } else {
+        historySection.style.display = 'block';
+        updateHistory();
+        document.querySelector('.toggle-history').textContent = 'SEMBUNYIKAN RIWAYAT';
+    }
+}
+
+// Keyboard support
+document.addEventListener('keydown', function(event) {
+    if (/[0-9]/.test(event.key)) {
+        appendNumber(event.key);
+    } else if (event.key === '.') {
+        appendDecimal();
+    } else if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+        appendOperator(event.key);
+    } else if (event.key === 'Enter' || event.key === '=') {
+        calculate();
+    } else if (event.key === 'Escape') {
+        clearDisplay();
+    } else if (event.key === 'Backspace') {
+        backspace();
+    }
+});
+
+// Inisialisasi tampilan
+updateDisplay();
